@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from . import project_task, diagram_version
+from . import helpdesk_ticket, diagram_version
