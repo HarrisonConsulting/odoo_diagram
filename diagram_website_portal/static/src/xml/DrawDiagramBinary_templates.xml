@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="draw_diagram_editor"  owl="1">
+    	<iframe
+            class="o_diagram_editor"
+            t-ref="diagramEditor"
+            t-att-src="url"
+            frameborder="0"
+        />
+    </t>
+</templates>
