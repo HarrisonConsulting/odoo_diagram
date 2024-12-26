@@ -11,17 +11,16 @@
     'description': """
     """,
     'category': 'Website',
-    'depends': ['project', 'base_draw_io','website'],
+    'depends': ['diagram_project_task','website'],
     'data': [
         "security/res_groups.xml",
         "views/project_task_portal_templates.xml",
     ],
     'assets': {
         'web.assets_frontend': [
-            # 'diagram_website_portal/static/src/scss/diagram_editor.scss',
+            'diagram_website_portal/static/src/scss/diagram_editor.scss',
             'diagram_website_portal/static/src/xml/DrawDiagramBinary_templates.xml',
-            'diagram_website_portal/static/src/js/taskPortal.js',
-            'diagram_website_portal/static/src/js/DrawDiagramBinary.js',
+            'diagram_website_portal/static/src/js/DrawDiagramPortal.js',
         ],
     },
     'installable': True,

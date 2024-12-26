@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-
+<!--    Template for rendering the draw diagram editor. -->
     <t t-name="draw_diagram_editor"  owl="1">
-    	<iframe
+    	<iframe id="iframeEditor"
             class="o_diagram_editor"
             t-ref="diagramEditor"
             t-att-src="url"

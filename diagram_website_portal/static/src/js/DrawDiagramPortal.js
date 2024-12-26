@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { session } from "@web/session"; // To access user session data
 const { Component, onMounted, useRef, useExternalListener, onWillStart, useState } = owl;
 import { jsonrpc } from "@web/core/network/rpc_service";
 import { useService } from "@web/core/utils/hooks";
@@ -10,80 +9,68 @@ export class DrawDiagramEditor extends Component {
     setup() {
         super.setup();
         this.frameRef = useRef('diagramEditor');
-        this.user = useService("user");
         this.hideLoadBtn = false;
         this.state = useState({data: {}})
+        this.user = useService("user");
         this.handleMessageEvent = this._handleMessageEvent.bind(this);
-        // Check if the current user belongs to the portal_diagram_editor group
-        this.isDiagramEditor = this._checkUserGroup();
-        // Load data asynchronously
-        onWillStart(async () => this.state.data = await this.loadData())
+        onWillStart(async () =>{
+            this.isDiagramEditor = await this._checkUserGroup();
+            this.state.data = await this.loadData();
+            });
         onMounted(async () => {
             this.frame = this.frameRef.el;
-            this.startEditing();
+            await this.startEditing();
+            let header = document.querySelector(".geMenubarContainer");
+            if (!this.isDiagramEditor && header) {
+                header.style.display = 'none';  // Hide the header if not in diagram editor
+            }
         });
         useExternalListener(window, "click", this.onWindowClick, true);
     }
-
+    onWindowClick(ev){
+        if($(ev.target).parent().hasClass('load-diagram-version')){
+            this.initializeEditor()
+        }
+    }
     // Check if the current user belongs to the 'portal_diagram_editor' group
     async _checkUserGroup() {
         // Assuming 'portal_diagram_editor' is the name of the group; replace with the actual group ID or name
             let data = await this.user.hasGroup('diagram_website_portal.portal_diagram_editor');
             return data
     }
-
-    onWindowClick(ev) {
-        if($(ev.target).parent().hasClass('load-diagram-version')){
-            this.initializeEditor()
-        }
-    }
-
     async loadData() {
-        const [response] = await jsonrpc(`/web/dataset/call_kw`, {
-            model: this.props.resModel,
-            method: "read",
-            args: [parseInt(this.props.resId), ["diagram","diagram_version_id"]],
-            kwargs: {}
+        const response = await jsonrpc("/web/load_data", {
+            res_model: this.props.resModel,
+            res_id: parseInt(this.props.resId),
         });
-        return response;
+        return response
     }
-
     get url() {
-        return "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1";
+        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        return url;
     }
-
-    postMessage(msg) {
+    postMessage (msg) {
         if (this.frame != null) {
             this.frame.contentWindow.postMessage(JSON.stringify(msg), '*');
         }
     }
-
-    async initializeEditor() {
-//        if (this.isDiagramEditor) {
-            this.postMessage({
-                action: 'load',
-                saveAndExit: '1',
-                modified: 'unsavedChanges',
-                xml: this.state.data.diagram,
-            });
-//        } else {
-//            alert('You do not have permission to edit this diagram.');
-//        }
+    async initializeEditor () {
+        this.postMessage({
+            action: 'load',
+            saveAndExit: this.isDiagramEditor ? '1' : '0',
+            modified: 'unsavedChanges',
+            xml: this.state.data.diagram,
+        });
     }
-
-    configureEditor() {
-        if (this.isDiagramEditor) {
-            this.postMessage({
-                action: 'configure',
-                config: this.props.config || {}
-            });
-        }
+    configureEditor () {
+        this.postMessage({
+            action: 'configure',
+            config: this.state.data.record || {}
+        });
     }
-
     startEditing() {
         window.addEventListener('message', this.handleMessageEvent);
     }
-
     _handleMessageEvent(evt) {
         if (this.frame != null && evt.source == this.frame.contentWindow &&
             evt.data.length > 0) {
@@ -97,7 +84,6 @@ export class DrawDiagramEditor extends Component {
             }
         }
     }
-
     handleMessage(msg) {
         switch (msg.event) {
             case 'configure':
@@ -114,24 +100,18 @@ export class DrawDiagramEditor extends Component {
                 break;
         }
     }
-
     async saveDiagram(xml, exit) {
         if (this.isDiagramEditor) {
-            await jsonrpc(`/web/dataset/call_kw/`, {
-                model: this.props.resModel,
-                method: "write",
-                args: [
-                    [this.props.resId],
-                    {[this.props.name]: xml, 'save_diagram': true}
-                ],
-                kwargs: {}
-            });
+        await jsonrpc("/web/save_diagram", {
+            res_model: this.props.resModel,
+            res_id: this.props.resId,
+            diagram_xml: xml,
+            save_diagram : true,
+        });
         } else {
             alert('You do not have permission to save this diagram.');
         }
     }
 }
-
 DrawDiagramEditor.template = "draw_diagram_editor";
 registry.category("public_components").add("draw_diagram", DrawDiagramEditor);
-
