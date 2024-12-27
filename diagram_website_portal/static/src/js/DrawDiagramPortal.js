@@ -20,10 +20,6 @@ export class DrawDiagramEditor extends Component {
         onMounted(async () => {
             this.frame = this.frameRef.el;
             await this.startEditing();
-            let header = document.querySelector(".geMenubarContainer");
-            if (!this.isDiagramEditor && header) {
-                header.style.display = 'none';  // Hide the header if not in diagram editor
-            }
         });
         useExternalListener(window, "click", this.onWindowClick, true);
     }
