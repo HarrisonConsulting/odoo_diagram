@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Inheriting project task portal template to add diagram draw functionality -->
+    <template id="diagram_website_portal.portal_my_task"
+              inherit_id="project.portal_my_task"
+              name="Portal Task Diagrams">
+        <xpath expr="//div[@t-if='task.description or task.attachment_ids']"
+               position="before">
+            <div id="task_diagram">
+                <hr class="mb-1"/>
+                <div class="d-flex my-2">
+                    <h5>Diagrams</h5>
+                </div>
+                <div id="task_diagram_io">
+                    <t t-set="props" t-value="json.dumps({
+                        'resModel': 'project.task',
+                        'resId': task.id,
+                        'name': 'diagram',
+                        })"/>
+                    <owl-component name="draw_diagram" t-att-props="props"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
