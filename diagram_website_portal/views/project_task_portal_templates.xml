@@ -5,19 +5,76 @@
               inherit_id="project.portal_my_task"
               name="Portal Task Diagrams">
         <xpath expr="//div[@t-if='task.description or task.attachment_ids']"
-               position="before">
+               position="replace">
             <div id="task_diagram">
-                <hr class="mb-1"/>
-                <div class="d-flex my-2">
-                    <h5>Diagrams</h5>
-                </div>
-                <div id="task_diagram_io">
-                    <t t-set="props" t-value="json.dumps({
-                        'resModel': 'project.task',
-                        'resId': task.id,
-                        'name': 'diagram',
-                        })"/>
-                    <owl-component name="draw_diagram" t-att-props="props"/>
+                <div class="container mt-4">
+                    <!-- Tab Navigation -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="home-tab"
+                               data-bs-toggle="tab" href="#home" role="tab"
+                               aria-controls="home" aria-selected="true">
+                                Description
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="profile-tab"
+                               data-bs-toggle="tab" href="#profile" role="tab"
+                               aria-controls="profile" aria-selected="false">
+                                Diagrams
+                            </a>
+                        </li>
+                        <li class="nav-item" t-if="task.attachment_ids" role="presentation">
+                            <a class="nav-link" id="contact-tab"
+                               data-bs-toggle="tab" href="#contact" role="tab"
+                               aria-controls="contact" aria-selected="false">
+                                Attachments
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Tab Content -->
+                    <div class="tab-content mt-3" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home"
+                             role="tabpanel" aria-labelledby="home-tab">
+                            <div class="py-1 px-2 bg-100 small table-responsive"
+                                 t-field="task.description"/>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel"
+                             aria-labelledby="profile-tab">
+                            <div id="task_diagram_io">
+                                <t t-set="props" t-value="json.dumps({
+                                    'resModel': 'project.task',
+                                    'resId': task.id,
+                                    'name': 'diagram',
+                                    })"/>
+                                <owl-component name="draw_diagram"
+                                               t-att-props="props"/>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel"
+                             aria-labelledby="contact-tab">
+                            <div class="row">
+                                <div t-attf-class="col {{'col-lg-6' if not task.description else 'col-lg-12'}}">
+                                    <ul class="list-group">
+                                        <a class="list-group-item list-group-item-action d-flex align-items-center oe_attachments py-1 px-2"
+                                           t-foreach='task.attachment_ids'
+                                           t-as='attachment'
+                                           t-attf-href="/web/content/#{attachment.id}?download=true&amp;access_token=#{attachment.access_token}"
+                                           target="_blank"
+                                           data-no-post-process="">
+                                            <div class='oe_attachment_embedded o_image o_image_small me-2 me-lg-3'
+                                                 t-att-title="attachment.name"
+                                                 t-att-data-mimetype="attachment.mimetype"
+                                                 t-attf-data-src="/web/image/#{attachment.id}/50x40?access_token=#{attachment.access_token}"/>
+                                            <div class='oe_attachment_name text-truncate'>
+                                                <t t-esc='attachment.name'/>
+                                            </div>
+                                        </a>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </xpath>
