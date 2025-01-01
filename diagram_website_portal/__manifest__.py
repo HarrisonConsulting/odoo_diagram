@@ -14,9 +14,13 @@
     'depends': ['diagram_project_task','website'],
     'data': [
         "security/res_groups.xml",
+        "views/project_task_views.xml",
         "views/project_task_portal_templates.xml",
     ],
     'assets': {
+        'web.assets_backend': [
+            'diagram_website_portal/static/src/js/project_sharing_form_compiler.js',
+        ],
         'web.assets_frontend': [
             'diagram_website_portal/static/src/scss/diagram_editor.scss',
             'diagram_website_portal/static/src/xml/DrawDiagramBinary_templates.xml',
