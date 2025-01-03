@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Group used for the collaborator users. -->
-   <record id="portal_diagram_editor" model="res.groups">
-       <field name="name">Portal Diagram Editors</field>
-       <field name="category_id" ref="base.module_category_services_project"/>
-       <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
-   </record>
+    <record id="portal_diagram_editor" model="res.groups">
+        <field name="name">Portal Diagram Editors</field>
+        <field name="category_id" ref="base.module_category_services_project"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
 </odoo>

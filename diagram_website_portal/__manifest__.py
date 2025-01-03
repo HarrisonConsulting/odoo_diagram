@@ -8,8 +8,7 @@
     'website': 'https://www.harrison.consulting',
     'sequence': 0,
     'license': 'GPL-3',
-    'description': """
-    """,
+    'description': """  """,
     'category': 'Website',
     'depends': ['diagram_project_task','website'],
     'data': [
@@ -18,13 +17,10 @@
         "views/project_task_portal_templates.xml",
     ],
     'assets': {
-        'web.assets_backend': [
-            'diagram_website_portal/static/src/js/project_sharing_form_compiler.js',
-        ],
-        'web.assets_frontend': [
-            'diagram_website_portal/static/src/scss/diagram_editor.scss',
-            'diagram_website_portal/static/src/xml/DrawDiagramBinary_templates.xml',
-            'diagram_website_portal/static/src/js/DrawDiagramPortal.js',
+        'project.webclient': [
+            "base_draw_io/static/src/scss/diagram_editor.scss",
+            "base_draw_io/static/src/js/draw_diagram_widget.js",
+            "base_draw_io/static/src/xml/draw_diagram_widget.xml",
         ],
     },
     'installable': True,
