@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams Base Module',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.0.1',
     'summary': 'This base module embeded Draw.io Tool',
     'author': 'Harrison Consulting',
     'website': 'https://www.harrison.consulting',
