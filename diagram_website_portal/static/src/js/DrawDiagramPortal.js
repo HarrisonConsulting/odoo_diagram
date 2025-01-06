@@ -43,6 +43,7 @@ export class DrawDiagramEditor extends Component {
     }
     get url() {
         var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        console.log('url',url)
         return url;
     }
     postMessage (msg) {

@@ -14,6 +14,9 @@
                             <field name="diagram_version_id" options="{'no_create': True}"/>
                         </group>
                         <button type="object" name="update_show_load_diagram" class="btn btn-primary load-diagram-version mb-1" string="Load Diagram Version" invisible="not show_load_diagram" />
+                        <div class="diagram-full-screen" style="margin-left: 80%;">
+                        <button type="object" name="show_full_screen_diagram" class="btn btn-secondary btn-sm load-diagram-full-screen" string="Full Screen"/>
+                        </div>
                     </div>
                     <group>
                         <field name="diagram" widget="draw_diagram"/>

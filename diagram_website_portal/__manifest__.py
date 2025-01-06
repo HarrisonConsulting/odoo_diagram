@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams for Portal Users',
-    'version': '17.0.1.0.1',
+    'version': '17.0.1.0.0',
     'summary': """This module helps to view and edit project task diagrams
      through the website portal.""",
     'author': 'Harrison Consulting',
@@ -17,6 +17,12 @@
         "views/project_task_portal_templates.xml",
     ],
     'assets': {
+        'web.assets_frontend': [
+            'diagram_website_portal/static/src/scss/diagram_editor.scss',
+            'diagram_website_portal/static/src/xml/DrawDiagramBinary_templates.xml',
+            'diagram_website_portal/static/src/js/DrawDiagramPortal.js',
+        ],
+
         'project.webclient': [
             "base_draw_io/static/src/scss/diagram_editor.scss",
             "base_draw_io/static/src/js/draw_diagram_widget.js",
