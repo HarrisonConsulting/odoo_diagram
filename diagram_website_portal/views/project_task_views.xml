@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    Inheriting the sharing task form view to add diagrams tab -->
+    <record id="project_sharing_project_task_view_form" model="ir.ui.view">
+        <field name="name">project.collab.project.task.view.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_sharing_project_task_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//page[last()]" position="after">
+                <page name="diagram_page" string="Diagrams">
+                    <div class="d-flex">
+                        <group>
+                            <field name="show_load_diagram" invisible="1"/>
+                            <field name="diagram_version_id" options="{'no_create': True}"/>
+                        </group>
+                        <button type="object" name="update_show_load_diagram" class="btn btn-primary load-diagram-version mb-1" string="Load Diagram Version" invisible="not show_load_diagram" />
+                    </div>
+                    <group>
+                        <field name="diagram" widget="draw_diagram"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
