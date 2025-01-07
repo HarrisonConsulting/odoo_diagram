@@ -21,6 +21,7 @@
             'diagram_website_portal/static/src/scss/diagram_editor.scss',
             'diagram_website_portal/static/src/xml/DrawDiagramBinary_templates.xml',
             'diagram_website_portal/static/src/js/DrawDiagramPortal.js',
+            'diagram_website_portal/static/src/js/PortalTask.js',
         ],
 
         'project.webclient': [
