@@ -66,11 +66,6 @@
                                 </div>
                             </div>
                          </div>
-
-
-
-
-
                             <div id="task_diagram_io">
                                 <t t-set="props" t-value="json.dumps({
                                     'resModel': 'project.task',

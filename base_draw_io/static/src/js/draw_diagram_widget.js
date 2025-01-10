@@ -28,10 +28,12 @@ export class DrawDiagramBinary extends CharField {
 
     get url() {
         var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        console.log('url',url)
         return url;
     }
 
     postMessage (msg) {
+        console.log('msg1111',msg)
         if (this.frame != null) {
             this.frame.contentWindow.postMessage(JSON.stringify(msg), '*');
         }
@@ -73,6 +75,7 @@ export class DrawDiagramBinary extends CharField {
     }
 
     handleMessage(msg) {
+        console.log('msg.url',msg)
         switch (msg.event) {
             case 'configure':
                 this.configureEditor();
@@ -100,7 +103,32 @@ export class DrawDiagramBinary extends CharField {
             kwargs:{}
         });
     }
-
+    fullScreenEditor(){
+        var diagramElement = document.querySelector('.o_diagram');
+        if (diagramElement) {
+            diagramElement.style.position = 'fixed';
+            diagramElement.style.width = '100%';
+            diagramElement.style.height = '100%';
+            diagramElement.style.left = '0';
+            diagramElement.style.top = '0';
+            diagramElement.style.zIndex = '999';
+        }
+       document.querySelector('.load-diagram-full-screen-close').style.display = '';
+       document.querySelector('.load-diagram-full-screen').style.display = 'none';
+    }
+    fullScreenEditorClose(){
+        var diagramElement = document.querySelector('.o_diagram');
+        if (diagramElement) {
+            diagramElement.style.position = '';
+            diagramElement.style.width = '';
+            diagramElement.style.height = '';
+            diagramElement.style.left = '';
+            diagramElement.style.top = '';
+            diagramElement.style.zIndex = '';
+        }
+        document.querySelector('.load-diagram-full-screen-close').style.display = 'none';
+        document.querySelector('.load-diagram-full-screen').style.display = '';
+    }
 }
 DrawDiagramBinary.template = "draw_io_diagram.draw_diagram";
 
