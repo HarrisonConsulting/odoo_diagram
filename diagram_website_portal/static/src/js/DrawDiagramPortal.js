@@ -31,7 +31,7 @@ export class DrawDiagramEditor extends Component {
     // Check if the current user belongs to the 'portal_diagram_editor' group
     async _checkUserGroup() {
         // Assuming 'portal_diagram_editor' is the name of the group; replace with the actual group ID or name
-            let data = await this.user.hasGroup('diagram_website_portal.portal_diagram_editor');
+            let data = await this.user.hasGroup("project.group_project_user");
             return data
     }
     async loadData() {
@@ -42,7 +42,13 @@ export class DrawDiagramEditor extends Component {
         return response
     }
     get url() {
-        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1";
+//        if (this.isDiagramEditor) {
+//            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1";
+//        } else {
+//            // Replace with the URL for viewing only (no edit access)
+//            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noSaveBtn=1&noExitBtn=1"
+//        }
         return url;
     }
     postMessage (msg) {

@@ -6,3 +6,20 @@
 #card_body{
     position: relative;
 }
+.fullscreen_diagram .modal-dialog {
+        height: 100%;
+        /* padding: 1.75rem 0; */
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 !important;
+    }
+.fullscreen_diagram .modal-content {
+    height: 100vh;
+    }
+
+.fullscreen_diagram  .o_diagram_editor {
+    width:100%;
+    height:800px;
+}
+
