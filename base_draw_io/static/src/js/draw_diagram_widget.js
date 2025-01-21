@@ -5,12 +5,14 @@ import { CharField, charField } from "@web/views/fields/char/char_field";
 const { Component, onMounted, useRef, useExternalListener } = owl;
 import { jsonrpc } from "@web/core/network/rpc_service";
 import { EventBus } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 export class DrawDiagramBinary extends CharField {
     setup() {
         this.bus = new EventBus();
         super.setup();
         this.frameRef = useRef('diagramEditor');
+        this.user = useService("user");
         this.hideLoadBtn = false;
         this.handleMessageEvent = this._handleMessageEvent.bind(this);
         onMounted(() => {
@@ -27,8 +29,15 @@ export class DrawDiagramBinary extends CharField {
     }
 
     get url() {
-        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
-        console.log('url',url)
+        var url;
+        var isInternalUser = await this.user.hasGroup("base.group_user");
+        var isPortalUser = await this.user.hasGroup("project.group_project_user");
+        if(isInternalUser){
+            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        }
+        else if(isPortalUser){
+            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        }
         return url;
     }
 
