@@ -42,7 +42,13 @@ export class DrawDiagramEditor extends Component {
         return response
     }
     get url() {
-        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        var url;
+        if (this.isDiagramEditor) {
+            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1";
+        } else {
+                // Replace with the URL for viewing only (no edit access)
+                url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noSaveBtn=1&noExitBtn=1"
+            }
         return url;
     }
     postMessage (msg) {

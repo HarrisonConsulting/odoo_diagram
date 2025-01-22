@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models, _
+from odoo import models
+
 PROJECT_TASK_READABLE_FIELDS = {
     'show_load_diagram',
     'diagram_version_id',
