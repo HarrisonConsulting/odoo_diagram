@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 <!--    Template for rendering the draw diagram editor. -->
-    <t t-name="draw_diagram_editor"  owl="1">
+    <t t-name="draw_diagram_editor" owl="1">
     	<iframe id="iframeEditor"
-            class="o_diagram_editor"
-            t-ref="diagramEditor"
-            t-att-src="url"
-            frameborder="0"
-        />
+                    class="o_diagram_editor"
+                    t-ref="diagramEditor"
+                    t-att-src="url"
+                    frameborder="0"
+                />
+<!--        <iframe frameborder="0" style="width:100%;height:400px;"-->
+<!--                src="https://app.diagrams.net?lightbox=1#Uhttps%3A%2F%2Fwww.alderg.com%2Fsandbox%2Flarge.vsdx"></iframe>-->
     </t>
 </templates>

@@ -5,14 +5,12 @@ import { CharField, charField } from "@web/views/fields/char/char_field";
 const { Component, onMounted, useRef, useExternalListener } = owl;
 import { jsonrpc } from "@web/core/network/rpc_service";
 import { EventBus } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
 
 export class DrawDiagramBinary extends CharField {
     setup() {
         this.bus = new EventBus();
         super.setup();
         this.frameRef = useRef('diagramEditor');
-        this.user = useService("user");
         this.hideLoadBtn = false;
         this.handleMessageEvent = this._handleMessageEvent.bind(this);
         onMounted(() => {
@@ -29,19 +27,13 @@ export class DrawDiagramBinary extends CharField {
     }
 
     get url() {
-        var url;
-        var isInternalUser = await this.user.hasGroup("base.group_user");
-        var isPortalUser = await this.user.hasGroup("project.group_project_user");
-        if(isInternalUser){
-            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
-        }
-        else if(isPortalUser){
-            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
-        }
+        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&fit=1&saveAndExit=0&noExitBtn=1"
+        console.log('url',url)
         return url;
     }
 
     postMessage (msg) {
+        console.log('msg1111',msg)
         if (this.frame != null) {
             this.frame.contentWindow.postMessage(JSON.stringify(msg), '*');
         }
@@ -113,6 +105,8 @@ export class DrawDiagramBinary extends CharField {
     }
     fullScreenEditor(){
         var diagramElement = document.querySelector('.o_diagram');
+        var diagramElementiframe = document.querySelector('.o_diagram_editor');
+        console.log('diagramElementiframe',diagramElementiframe)
         if (diagramElement) {
             diagramElement.style.position = 'fixed';
             diagramElement.style.width = '100%';
@@ -121,11 +115,21 @@ export class DrawDiagramBinary extends CharField {
             diagramElement.style.top = '0';
             diagramElement.style.zIndex = '999';
         }
+        if (diagramElementiframe) {
+            diagramElementiframe.style.position = 'fixed';
+//            diagramElementiframe.style.width = '100%';
+            diagramElementiframe.style.width = '100%';
+            diagramElementiframe.style.height = '100%';
+            diagramElementiframe.style.left = '0';
+            diagramElementiframe.style.top = '0';
+            diagramElementiframe.style.zIndex = '999';
+        }
        document.querySelector('.load-diagram-full-screen-close').style.display = '';
        document.querySelector('.load-diagram-full-screen').style.display = 'none';
     }
     fullScreenEditorClose(){
         var diagramElement = document.querySelector('.o_diagram');
+        var diagramElementiframe = document.querySelector('.o_diagram_editor');
         if (diagramElement) {
             diagramElement.style.position = '';
             diagramElement.style.width = '';
@@ -133,6 +137,14 @@ export class DrawDiagramBinary extends CharField {
             diagramElement.style.left = '';
             diagramElement.style.top = '';
             diagramElement.style.zIndex = '';
+        }
+        if (diagramElementiframe) {
+//            diagramElementiframe.style.position = 'fixed';
+            diagramElementiframe.style.width = '';
+            diagramElementiframe.style.height = '';
+//            diagramElementiframe.style.left = '0';
+//            diagramElementiframe.style.top = '0';
+//            diagramElementiframe.style.zIndex = '999';
         }
         document.querySelector('.load-diagram-full-screen-close').style.display = 'none';
         document.querySelector('.load-diagram-full-screen').style.display = '';
