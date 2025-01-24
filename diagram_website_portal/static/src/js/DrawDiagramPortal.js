@@ -20,6 +20,7 @@ export class DrawDiagramEditor extends Component {
         onMounted(async () => {
             this.frame = this.frameRef.el;
             await this.startEditing();
+            await this.loadIframe();
         });
         useExternalListener(window, "click", this.onWindowClick, true);
     }
@@ -51,11 +52,8 @@ export class DrawDiagramEditor extends Component {
             url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
         }
         else{
-             // Check if the browser is Chrome
-             const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-             // If the browser is Chrome, encode the diagram data
-             var text = isChrome ? encodeURIComponent(this.state.data.diagram) : this.state.data.diagram;
-             url = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`;
+             var diagramXml = encodeURIComponent(this.state.data.diagram)
+             url = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${diagramXml}`;
         }
         return url;
     }
@@ -77,6 +75,19 @@ export class DrawDiagramEditor extends Component {
             action: 'configure',
             config: this.state.data.record || {}
         });
+    }
+    async loadIframe(){
+        if (!this.isDiagramEditor) {
+                this.frame.src = ''; // Clear the src
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                var text = encodeURIComponent(this.state.data.diagram);
+                this.frame.src = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`; // Reset the src to the original URL (reloads the iframe)
+        }
+        else{
+            this.frame.src = ''; // Clear the src
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            this.frame.src = `https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1`;
+        }
     }
     startEditing() {
         window.addEventListener('message', this.handleMessageEvent);

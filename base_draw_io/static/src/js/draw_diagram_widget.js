@@ -105,46 +105,34 @@ export class DrawDiagramBinary extends CharField {
     }
     fullScreenEditor(){
         var diagramElement = document.querySelector('.o_diagram');
+        diagramElement.requestFullscreen()
         var diagramElementiframe = document.querySelector('.o_diagram_editor');
-        console.log('diagramElementiframe',diagramElementiframe)
         if (diagramElement) {
             diagramElement.style.position = 'fixed';
             diagramElement.style.width = '100%';
             diagramElement.style.height = '100%';
+            diagramElementiframe.style.height = '95%';
             diagramElement.style.left = '0';
             diagramElement.style.top = '0';
             diagramElement.style.zIndex = '999';
-        }
-        if (diagramElementiframe) {
-            diagramElementiframe.style.position = 'fixed';
-//            diagramElementiframe.style.width = '100%';
-            diagramElementiframe.style.width = '100%';
-            diagramElementiframe.style.height = '100%';
-            diagramElementiframe.style.left = '0';
-            diagramElementiframe.style.top = '0';
-            diagramElementiframe.style.zIndex = '999';
         }
        document.querySelector('.load-diagram-full-screen-close').style.display = '';
        document.querySelector('.load-diagram-full-screen').style.display = 'none';
     }
     fullScreenEditorClose(){
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        }
         var diagramElement = document.querySelector('.o_diagram');
         var diagramElementiframe = document.querySelector('.o_diagram_editor');
         if (diagramElement) {
             diagramElement.style.position = '';
             diagramElement.style.width = '';
+            diagramElementiframe.style.height = '';
             diagramElement.style.height = '';
             diagramElement.style.left = '';
             diagramElement.style.top = '';
             diagramElement.style.zIndex = '';
-        }
-        if (diagramElementiframe) {
-//            diagramElementiframe.style.position = 'fixed';
-            diagramElementiframe.style.width = '';
-            diagramElementiframe.style.height = '';
-//            diagramElementiframe.style.left = '0';
-//            diagramElementiframe.style.top = '0';
-//            diagramElementiframe.style.zIndex = '999';
         }
         document.querySelector('.load-diagram-full-screen-close').style.display = 'none';
         document.querySelector('.load-diagram-full-screen').style.display = '';

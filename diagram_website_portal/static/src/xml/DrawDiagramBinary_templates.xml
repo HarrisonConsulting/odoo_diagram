@@ -8,7 +8,5 @@
                     t-att-src="url"
                     frameborder="0"
                 />
-<!--        <iframe frameborder="0" style="width:100%;height:400px;"-->
-<!--                src="https://app.diagrams.net?lightbox=1#Uhttps%3A%2F%2Fwww.alderg.com%2Fsandbox%2Flarge.vsdx"></iframe>-->
     </t>
 </templates>
