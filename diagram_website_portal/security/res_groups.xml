@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Group used for the collaborator users. -->
-    <record id="portal_diagram_editor" model="res.groups">
-        <field name="name">Portal Diagram Editors</field>
-        <field name="category_id" ref="base.module_category_services_project"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
-    </record>
+<!--    <record id="portal_diagram_editor" model="res.groups">-->
+<!--        <field name="name">Portal Diagram Editors</field>-->
+<!--        <field name="category_id" ref="base.module_category_services_project"/>-->
+<!--        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>-->
+<!--    </record>-->
     <record id="access_diagram_versions_portal_user" model="ir.model.access">
             <field name="name">portal_users_diagram_editors</field>
             <field name="model_id" ref="base_draw_io.model_diagram_version"/>
-            <field name="group_id" ref="diagram_website_portal.portal_diagram_editor"/>
+            <field name="group_id" ref="base.group_portal"/>
             <field name="active">1</field>
             <field name="perm_read">1</field>
             <field name="perm_write">1</field>

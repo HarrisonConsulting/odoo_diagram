@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-
     <t t-name="draw_io_diagram.draw_diagram" owl="1">
         <div class="o_diagram">
             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px;">
                 <button type="object" t-on-click="fullScreenEditor"
                         class="btn btn-secondary load-diagram-full-screen my-2"
                         style="writing-mode: horizontal-tb;">
-                    Full Screen
+                    <i class="fa fa-expand" style="padding: 7px;"/> Full Screen
                 </button>
                 <button type="object" t-on-click="fullScreenEditorClose"
                         class="btn btn-secondary load-diagram-full-screen-close my-2"

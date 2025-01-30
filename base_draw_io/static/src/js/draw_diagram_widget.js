@@ -6,12 +6,11 @@ const { Component, onMounted, useRef, useExternalListener } = owl;
 import { jsonrpc } from "@web/core/network/rpc_service";
 import { EventBus } from "@odoo/owl";
 
+
 export class DrawDiagramBinary extends CharField {
     setup() {
-        this.bus = new EventBus();
         super.setup();
         this.frameRef = useRef('diagramEditor');
-        this.hideLoadBtn = false;
         this.handleMessageEvent = this._handleMessageEvent.bind(this);
         onMounted(() => {
             this.frame = this.frameRef.el;
@@ -27,13 +26,11 @@ export class DrawDiagramBinary extends CharField {
     }
 
     get url() {
-        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
-        console.log('url',url)
+        var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&fit=1&saveAndExit=0&noExitBtn=1"
         return url;
     }
 
     postMessage (msg) {
-        console.log('msg1111',msg)
         if (this.frame != null) {
             this.frame.contentWindow.postMessage(JSON.stringify(msg), '*');
         }
@@ -42,9 +39,8 @@ export class DrawDiagramBinary extends CharField {
     async initializeEditor () {
         this.postMessage({
             action: 'load',
-            saveAndExit: '1',
-            modified: 'unsavedChanges',
             xml: this.props.record.data.diagram,
+            autosave: '1',
         });
     }
 
@@ -54,12 +50,9 @@ export class DrawDiagramBinary extends CharField {
             config: this.props.config
         });
     }
-
-
     startEditing() {
         window.addEventListener('message', this.handleMessageEvent);
     }
-
     _handleMessageEvent(evt) {
         if (this.frame != null && evt.source == this.frame.contentWindow &&
             evt.data.length > 0) {
@@ -74,8 +67,7 @@ export class DrawDiagramBinary extends CharField {
         }
     }
 
-    handleMessage(msg) {
-        console.log('msg.url',msg)
+    async handleMessage(msg) {
         switch (msg.event) {
             case 'configure':
                 this.configureEditor();
@@ -86,6 +78,9 @@ export class DrawDiagramBinary extends CharField {
             case 'save':
                 this.saveDiagram(msg.xml, msg.exit);
                 break;
+            case 'autosave':
+                 await this.saveDiagram(msg.xml, msg.exit);
+                 break;
             default:
                 console.log(msg.event);
                 break;
@@ -93,6 +88,7 @@ export class DrawDiagramBinary extends CharField {
     }
 
     async saveDiagram(xml, exit) {
+        var self=this
         await jsonrpc(`/web/dataset/call_kw/${this.props.record._config.resModel}/write`, {
             model: this.props.record._config.resModel,
             method: "write",
@@ -102,25 +98,34 @@ export class DrawDiagramBinary extends CharField {
             ],
             kwargs:{}
         });
+        self.props.record.data.diagram = xml;
     }
+
     fullScreenEditor(){
         var diagramElement = document.querySelector('.o_diagram');
+        diagramElement.requestFullscreen()
         if (diagramElement) {
             diagramElement.style.position = 'fixed';
             diagramElement.style.width = '100%';
             diagramElement.style.height = '100%';
+            this.frame.style.height = '95%';
             diagramElement.style.left = '0';
             diagramElement.style.top = '0';
             diagramElement.style.zIndex = '999';
         }
        document.querySelector('.load-diagram-full-screen-close').style.display = '';
        document.querySelector('.load-diagram-full-screen').style.display = 'none';
+       this.frame.src = 'https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&fit=1&saveAndExit=0&noExitBtn=1';
     }
     fullScreenEditorClose(){
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        }
         var diagramElement = document.querySelector('.o_diagram');
         if (diagramElement) {
             diagramElement.style.position = '';
             diagramElement.style.width = '';
+            this.frame.style.height = '';
             diagramElement.style.height = '';
             diagramElement.style.left = '';
             diagramElement.style.top = '';
@@ -128,6 +133,7 @@ export class DrawDiagramBinary extends CharField {
         }
         document.querySelector('.load-diagram-full-screen-close').style.display = 'none';
         document.querySelector('.load-diagram-full-screen').style.display = '';
+        this.frame.src = 'https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&fit=1&saveAndExit=0&noExitBtn=1';
     }
 }
 DrawDiagramBinary.template = "draw_io_diagram.draw_diagram";
