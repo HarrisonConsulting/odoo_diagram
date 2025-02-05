@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+<!--    Template for rendering a diagram behavior blueprint within the knowledge article editor.-->
+    <t t-name="knowledge.DiagramBehaviorBlueprint">
+        <div t-attf-class="o_knowledge_behavior_anchor #{behaviorType}" data-oe-protected="true"/>
+    </t>
+</templates>
