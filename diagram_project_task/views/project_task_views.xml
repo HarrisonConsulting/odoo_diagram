@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	<record id="view_task_form2_inherited" model="ir.ui.view">
+    <record id="view_task_form2_inherited" model="ir.ui.view">
         <field name="name">view.task.form2.inherited</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
@@ -10,9 +10,13 @@
                     <div class="d-flex">
                         <group>
                             <field name="show_load_diagram" invisible="1"/>
-                            <field name="diagram_version_id" options="{'no_create': True}"/>
+                            <field name="diagram_version_id"
+                                   options="{'no_create': True}"/>
                         </group>
-                        <button type="object" name="update_show_load_diagram" class="btn btn-primary load-diagram-version mb-1" string="Load Diagram Version" invisible="not show_load_diagram" />
+                        <button type="object" name="update_show_load_diagram"
+                                class="btn btn-primary load-diagram-version mb-1"
+                                string="Load Diagram Version"
+                                invisible="not show_load_diagram"/>
                     </div>
                     <group>
                         <field name="diagram" widget="draw_diagram"/>
