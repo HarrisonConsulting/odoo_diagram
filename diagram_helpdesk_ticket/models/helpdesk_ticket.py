@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 
+
 class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"
 
@@ -19,7 +20,7 @@ class HelpdeskTicket(models.Model):
             created_diagram_ver = self.env["diagram.version"].create({
                 'name': diagram_name,
                 'diagram_xml': vals.get('diagram'),
-                'ticket_id' : self.id,
+                'ticket_id': self.id,
             })
         return super(HelpdeskTicket, self).write(vals)
 
@@ -32,4 +33,3 @@ class HelpdeskTicket(models.Model):
     def update_show_load_diagram(self):
         '''Set field show_load_diagram to Flase to hide the button '''
         self.show_load_diagram = False
-

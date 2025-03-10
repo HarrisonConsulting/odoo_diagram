@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams Base Module',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.0.1',
     'summary': 'This base module embeded Draw.io Tool',
     'author': 'Harrison Consulting',
     'website': 'https://www.harrison.consulting',
@@ -14,6 +14,7 @@
     'data': [
         "security/ir.model.access.csv",
         "views/diagram_version_view.xml",
+        "views/res_config_settings_views.xml",
     ],
     'assets':{
         'web.assets_backend':[

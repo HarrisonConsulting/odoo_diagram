@@ -20,6 +20,7 @@ export class DrawDiagramEditor extends Component {
         onMounted(async () => {
             this.frame = this.frameRef.el;
             await this.startEditing();
+            await this.loadIframe();
         });
         useExternalListener(window, "click", this.onWindowClick, true);
     }
@@ -30,9 +31,14 @@ export class DrawDiagramEditor extends Component {
     }
     // Check if the current user belongs to the 'portal_diagram_editor' group
     async _checkUserGroup() {
-        // Assuming 'portal_diagram_editor' is the name of the group; replace with the actual group ID or name
-            let data = await this.user.hasGroup('diagram_website_portal.portal_diagram_editor');
-            return data
+        // Assuming 'portal_diagram_editor' is the name of the group; replace
+        // with the actual group ID or name
+            let data = await this.user.hasGroup("project.group_project_user");
+            let ViewUrl = await jsonrpc("/web/view_diagram", {
+                res_model: this.props.resModel,
+                res_id: this.props.resId
+            });
+            return ViewUrl
     }
     async loadData() {
         const response = await jsonrpc("/web/load_data", {
@@ -44,11 +50,12 @@ export class DrawDiagramEditor extends Component {
     get url() {
         var url;
         if (this.isDiagramEditor) {
-            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1";
-        } else {
-                // Replace with the URL for viewing only (no edit access)
-                url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noSaveBtn=1&noExitBtn=1"
-            }
+            url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1"
+        }
+        else{
+             var diagramXml = encodeURIComponent(this.state.data.diagram)
+             url = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${diagramXml}`;
+        }
         return url;
     }
     postMessage (msg) {
@@ -69,6 +76,19 @@ export class DrawDiagramEditor extends Component {
             action: 'configure',
             config: this.state.data.record || {}
         });
+    }
+    async loadIframe(){
+        if (!this.isDiagramEditor) {
+                this.frame.src = '';
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                var text = encodeURIComponent(this.state.data.diagram);
+                this.frame.src = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`; // Reset the src to the original URL (reloads the iframe)
+        }
+        else{
+            this.frame.src = '';
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            this.frame.src = `https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1`;
+        }
     }
     startEditing() {
         window.addEventListener('message', this.handleMessageEvent);
@@ -103,16 +123,12 @@ export class DrawDiagramEditor extends Component {
         }
     }
     async saveDiagram(xml, exit) {
-        if (this.isDiagramEditor) {
         await jsonrpc("/web/save_diagram", {
             res_model: this.props.resModel,
             res_id: this.props.resId,
             diagram_xml: xml,
             save_diagram : true,
         });
-        } else {
-            alert('You do not have permission to save this diagram.');
-        }
     }
 }
 DrawDiagramEditor.template = "draw_diagram_editor";
