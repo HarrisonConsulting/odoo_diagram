@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams for Knowledge Module',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.0.1',
     'summary': """This moodule adds a diagram in '/' menu in knowledge to draw diagrams.""",
     'author': 'Harrison Consulting',
     'website': 'https://www.harrison.consulting',

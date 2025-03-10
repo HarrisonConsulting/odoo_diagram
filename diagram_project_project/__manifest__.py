@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams for Project',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.0.1',
     'summary': '''
     This moodule adds a tab to the project model form to draw diagrams. 
     These diagrams would be context specific to the project and its tasks.
