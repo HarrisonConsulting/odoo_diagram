@@ -8,5 +8,4 @@ class ResConfigSettings(models.TransientModel):
         string='Diagram History Records Count',
         help='The number of diagram history records for the project.',
         default=13,
-        config_parameter='base_draw_io.diagram_history_records_count',
-        implied_group="project.group_project_recurring_tasks")
+        config_parameter='base_draw_io.diagram_history_records_count')

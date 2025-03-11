@@ -6,11 +6,14 @@
         <field name="priority" eval="50"/>
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//block[@id='tasks_management']" position="inside">
-                <setting id="recurring_tasks_setting"
-                         help="The number of diagram history records for the project task to keep.">
-                    <field name="diagram_history_records_count"/>
-                </setting>
+            <xpath expr="//form" position="inside">
+                <app data-string="Diagrams" string="Diagrams" name="diagram">
+                    <block title="Diagram Settings" id="diagram_settings">
+                        <setting id="diagram_history_setting" help="The number of diagram history records to keep.">
+                            <field name="diagram_history_records_count"/>
+                        </setting>
+                    </block>
+                </app>
             </xpath>
         </field>
     </record>
