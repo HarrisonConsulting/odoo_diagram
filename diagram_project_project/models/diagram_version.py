@@ -1,23 +1,18 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
 
-
 class DiagramVersion(models.Model):
     _inherit = "diagram.version"
     
-    project_id = fields.Many2one('project.project')
-
-    @api.model
-    def create(self, vals):
-        new_record = super(DiagramVersion, self).create(vals)
-        project_id = vals.get('project_id') or new_record.project_id.id
-        # Get all records with the same project_id, ordered by creation date
-        # (or any field to define "latest")
-        existing_records = self.search([('project_id', '=', project_id)],
-                                       order='create_date desc')
-        limit = int(self.env['ir.config_parameter'].sudo().get_param('base_draw_io.diagram_history_records_count'))
-        # If there are more than 13 records, delete the older ones
-        if len(existing_records) > limit:
-            records_to_delete = existing_records[limit:]  # All records after the 13th latest
-            records_to_delete.sudo().unlink()
-        return new_record
+    project_id = fields.Many2one('project.project', string="Project",
+                                 help="The project this diagram is related to.")
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Pre-process values to set reference_model and reference_id
+        for vals in vals_list:
+            if vals.get('project_id') and not vals.get('reference_model'):
+                vals['reference_model'] = 'project.project'
+                vals['reference_id'] = vals['project_id']
+                
+        return super(DiagramVersion, self).create(vals_list)

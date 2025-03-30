@@ -5,32 +5,41 @@ from odoo import api, fields, models, _
 class ProjectProject(models.Model):
     _inherit = "project.project"
 
-    diagram = fields.Char(string=_("Diagram"), copy=False)
-    diagram_version_id = fields.Many2one("diagram.version", string=_("Diagram Versions"), domain="[('project_id','=', id)]")
-    show_load_diagram = fields.Boolean()
+    diagram = fields.Char(string="Diagram", copy=False,
+                         help="Stores the XML representation of the diagram for this project.")
+    diagram_version_id = fields.Many2one("diagram.version", string="Diagram Versions", 
+                                       domain="[('reference_model', '=', 'project.project'), ('reference_id', '=', id)]",
+                                       help="Reference to previous versions of this diagram.")
+    show_load_diagram = fields.Boolean(string="Show Load Diagram Button",
+                                     help="Technical field to control visibility of the load diagram button.")
 
     def write(self, vals):
-        if vals.get('diagram', False) and vals.get('save_diagram',False):
+        if vals.get('diagram') and vals.get('save_diagram'):
             del vals['save_diagram']
-            timezone = self._context.get('tz') or self.env.user.partner_id.tz or 'UTC'
-            self_tz = self.with_context(tz=timezone)
-            date = fields.Datetime.context_timestamp(self_tz, fields.Datetime.now())
-            diagram_name = _(f"{date.strftime('%Y-%m-%d %H:%M:%S')} - {self.name}")
-            # Store the saved diagram as a record to future use
-            created_diagram_ver = self.env["diagram.version"].create({
-                'name': diagram_name,
-                'diagram_xml': vals.get('diagram'),
-                'project_id' : self.id,
-            })
+            for record in self:
+                timezone = self._context.get('tz') or self.env.user.partner_id.tz or 'UTC'
+                self_tz = record.with_context(tz=timezone)
+                date = fields.Datetime.context_timestamp(self_tz, fields.Datetime.now())
+                diagram_name = _(f"{date.strftime('%Y-%m-%d %H:%M:%S')} - {record.name}")
+                
+                # Create diagram version using the generic reference-based approach
+                self.env["diagram.version"].create({
+                    'name': diagram_name,
+                    'diagram_xml': vals.get('diagram'),
+                    'reference_model': 'project.project',
+                    'reference_id': record.id,
+                })
+                
         return super(ProjectProject, self).write(vals)
 
     @api.onchange('diagram_version_id')
     def onchange_diagram_version_id(self):
-        if self.diagram_version_id:
-            self.diagram = self.diagram_version_id.diagram_xml
-            self.show_load_diagram = True
+        for record in self:
+            if record.diagram_version_id:
+                record.diagram = record.diagram_version_id.diagram_xml
+                record.show_load_diagram = True
 
     def update_show_load_diagram(self):
-        '''Set field show_load_diagram to Flase to hide the button '''
+        """Set field show_load_diagram to False to hide the button"""
         self.show_load_diagram = False
 

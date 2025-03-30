@@ -1,19 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	<record id="diagram_version_form_view" model="ir.ui.view">
+    <record id="diagram_version_form_view" model="ir.ui.view">
         <field name="name">diagram.version.form.view</field>
         <field name="model">diagram.version</field>
         <field name="arch" type="xml">
-        	<form string="Diagram Versions" create="0" edit="0">
-	        	<sheet>
-	                <group>
-	                    <field name="name" readonly="True" />
-	                    <field name="create_date" readonly="True" />
-	                    <field name="create_uid" readonly="True" />
-	                    <field name="diagram_xml" readonly="True" />
-	                </group>
-	        	</sheet>
-	        </form>
+            <form string="Diagram Versions">
+                <header>
+                    <button name="toggle_pin" type="object" 
+                            string="Unpin" icon="fa-thumb-tack" 
+                            invisible="not is_pinned" 
+                            class="btn-secondary"/>
+                    <button name="toggle_pin" type="object" 
+                            string="Pin" icon="fa-thumb-tack" 
+                            invisible="is_pinned" 
+                            class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" class="text-break"/>
+                            <span class="fa fa-thumb-tack text-success" invisible="not is_pinned" title="Pinned Diagram"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="create_date" readonly="1"/>
+                            <field name="create_uid" readonly="1"/>
+                            <field name="is_pinned"/>
+                        </group>
+                        <group>
+                            <field name="reference_model" readonly="1"/>
+                            <field name="reference_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="diagram_xml" readonly="1" widget="draw_diagram"/>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
+
+    <record id="diagram_version_tree_view" model="ir.ui.view">
+        <field name="name">diagram.version.tree.view</field>
+        <field name="model">diagram.version</field>
+        <field name="arch" type="xml">
+            <tree string="Diagram Versions">
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="reference_model"/>
+                <field name="is_pinned" widget="boolean_toggle"/>
+                <button name="toggle_pin" type="object" icon="fa-thumb-tack" 
+                        class="text-primary" invisible="is_pinned" title="Pin Version"/>
+                <button name="toggle_pin" type="object" icon="fa-thumb-tack" 
+                        class="text-success" invisible="not is_pinned" title="Unpin Version"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_diagram_versions" model="ir.actions.act_window">
+        <field name="name">Diagram Versions</field>
+        <field name="res_model">diagram.version</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_diagram_versions" 
+              name="Diagram Versions" 
+              parent="base.menu_administration" 
+              action="action_diagram_versions" 
+              sequence="100"/>
 </odoo>

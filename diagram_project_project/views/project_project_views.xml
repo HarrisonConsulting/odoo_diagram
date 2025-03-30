@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	<record id="project_edit_project_inherited" model="ir.ui.view">
+    <record id="project_edit_project_inherited" model="ir.ui.view">
         <field name="name">project.edit_project.inherited</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook//page[last()]" position="after">
                 <page name="diagram_page" string="Diagrams">
-                    <div class="d-flex">
+                    <div class="d-flex align-items-center">
                         <group>
                             <field name="show_load_diagram" invisible="1"/>
-                            <field name="diagram_version_id" options="{'no_create': True}"/>
+                            <field name="diagram_version_id" 
+                                   options="{'no_create': True}"/>
                         </group>
-                        <button type="object" name="update_show_load_diagram" class="btn btn-primary load-diagram-version mb-1" string="Load Diagram Version" invisible="not show_load_diagram" />
+                        <div class="ms-3">
+                            <button type="object" name="update_show_load_diagram"
+                                    class="btn btn-primary load-diagram-version mb-1"
+                                    string="Load Version"
+                                    invisible="not show_load_diagram"/>
+                            <button name="%(base_draw_io.action_diagram_versions)d"
+                                    type="action"
+                                    context="{'default_reference_model': 'project.project', 'default_reference_id': id, 'search_default_reference_model': 'project.project', 'search_default_reference_id': id}"
+                                    string="Manage Versions"
+                                    class="btn btn-secondary mb-1"/>
+                        </div>
                     </div>
                     <group>
                         <field name="diagram" widget="draw_diagram"/>
