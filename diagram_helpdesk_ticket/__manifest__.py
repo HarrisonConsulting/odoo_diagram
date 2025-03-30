@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams for Helpdesk Ticket',
-    'version': '17.0.1.0.2',
-    'summary': 'This moodule adds a tab to Helpdesk Tickets form to draw diagrams.',
+    'version': '17.0.1.0.4',
+    'summary': 'This moduleadds a tab to Helpdesk Tickets form to draw diagrams.',
     'author': 'Harrison Consulting',
     'website': 'https://www.harrison.consulting',
     'sequence': 0,
