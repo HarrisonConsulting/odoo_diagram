@@ -19,7 +19,7 @@
                     <div class="oe_title">
                         <h1>
                             <field name="name" readonly="1" class="text-break"/>
-                            <span class="fa fa-thumb-tack text-success" invisible="not is_pinned"/>
+                            <span class="fa fa-thumb-tack text-success" invisible="not is_pinned" title="Pinned Diagram"/>
                         </h1>
                     </div>
                     <group>
@@ -52,9 +52,9 @@
                 <field name="reference_model"/>
                 <field name="is_pinned" widget="boolean_toggle"/>
                 <button name="toggle_pin" type="object" icon="fa-thumb-tack" 
-                        class="text-primary" invisible="is_pinned"/>
+                        class="text-primary" invisible="is_pinned" title="Pin Version"/>
                 <button name="toggle_pin" type="object" icon="fa-thumb-tack" 
-                        class="text-success" invisible="not is_pinned"/>
+                        class="text-success" invisible="not is_pinned" title="Unpin Version"/>
             </tree>
         </field>
     </record>
