@@ -21,5 +21,6 @@
         <field name="view_mode">tree,form</field>
         <field name="domain">[('reference_model', '=', 'knowledge.article')]</field>
         <field name="context">{'default_reference_model': 'knowledge.article'}</field>
+        <field name="path">knowledge-diagram-versions</field>
     </record>
 </odoo>

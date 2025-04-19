@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams for Project Task',
-    'version': '17.0.1.0.2',
+    'version': '18.0.1.0.2',
     'summary': 'This moduleadds a tab to the project task form to draw diagrams.',
     'author': 'Harrison Consulting',
     'website': 'https://www.harrison.consulting',

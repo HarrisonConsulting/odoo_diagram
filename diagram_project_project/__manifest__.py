@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Draw.io Diagrams for Project',
-    'version': '17.0.1.0.2',
+    'version': '18.0.1.0.2',
     'summary': '''
     This moduleadds a tab to the project model form to draw diagrams. 
     These diagrams would be context specific to the project and its tasks.

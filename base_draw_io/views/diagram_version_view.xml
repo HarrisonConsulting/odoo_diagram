@@ -45,7 +45,7 @@
         <field name="name">diagram.version.tree.view</field>
         <field name="model">diagram.version</field>
         <field name="arch" type="xml">
-            <tree string="Diagram Versions">
+            <list string="Diagram Versions">
                 <field name="name"/>
                 <field name="create_date"/>
                 <field name="create_uid"/>
@@ -55,7 +55,7 @@
                         class="text-primary" invisible="is_pinned" title="Pin Version"/>
                 <button name="toggle_pin" type="object" icon="fa-thumb-tack" 
                         class="text-success" invisible="not is_pinned" title="Unpin Version"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -63,6 +63,7 @@
         <field name="name">Diagram Versions</field>
         <field name="res_model">diagram.version</field>
         <field name="view_mode">tree,form</field>
+        <field name="path">diagram-versions</field>
     </record>
 
     <menuitem id="menu_diagram_versions" 
