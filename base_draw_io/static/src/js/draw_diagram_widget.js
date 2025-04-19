@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { CharField, charField } from "@web/views/fields/char/char_field";
 const { Component, onMounted, useRef, useExternalListener } = owl;
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc as jsonrpc } from "@web/core/network/rpc";
 import { EventBus } from "@odoo/owl";
 
 
