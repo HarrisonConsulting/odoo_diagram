@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 const { Component, onMounted, useRef, useExternalListener, onWillStart, useState } = owl;
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import { useService } from "@web/core/utils/hooks";
 
 export class DrawDiagramEditor extends Component {
@@ -34,14 +34,14 @@ export class DrawDiagramEditor extends Component {
         // Assuming 'portal_diagram_editor' is the name of the group; replace
         // with the actual group ID or name
             let data = await this.user.hasGroup("project.group_project_user");
-            let ViewUrl = await jsonrpc("/web/view_diagram", {
+            let ViewUrl = await rpc("/web/view_diagram", {
                 res_model: this.props.resModel,
                 res_id: this.props.resId
             });
             return ViewUrl
     }
     async loadData() {
-        const response = await jsonrpc("/web/load_data", {
+        const response = await rpc("/web/load_data", {
             res_model: this.props.resModel,
             res_id: parseInt(this.props.resId),
         });
@@ -123,7 +123,7 @@ export class DrawDiagramEditor extends Component {
         }
     }
     async saveDiagram(xml, exit) {
-        await jsonrpc("/web/save_diagram", {
+        await rpc("/web/save_diagram", {
             res_model: this.props.resModel,
             res_id: this.props.resId,
             diagram_xml: xml,
