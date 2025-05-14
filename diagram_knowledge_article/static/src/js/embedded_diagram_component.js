@@ -1,12 +1,14 @@
 /** @odoo-module */
-
-import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
-
+import { Component } from "@odoo/owl";
 const { onMounted, useRef, useExternalListener } = owl;
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { useService } from "@web/core/utils/hooks";
+import { rpc as jsonrpc } from "@web/core/network/rpc";
+import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
+import { getEmbeddedProps } from "@html_editor/others/embedded_component_utils";
+import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
 
 /**
- * DiagramBehavior is responsible for managing the interaction with an embedded diagram editor
+ * EmbeddedDiagramComponent is responsible for managing the interaction with an embedded diagram editor
  * within a knowledge article.
  *
  * It handles the initialization, configuration, editing, saving, and communication with the
@@ -14,10 +16,11 @@ import { jsonrpc } from "@web/core/network/rpc_service";
  * via communication with the iframe.
  */
 
-export class DiagramBehavior extends AbstractBehavior {
-    static template = "knowledge.DiagramBehavior";
+export class EmbeddedDiagramComponent extends Component {
+    static template = "diagram_knowledge_article.EmbeddedDiagram";
     setup() {
         super.setup();
+        this.orm = useService("orm");
         this.frameRef = useRef('diagramEditor');
         this.handleMessageEvent = this._handleMessageEvent.bind(this);
         onMounted(async () => {
@@ -27,37 +30,35 @@ export class DiagramBehavior extends AbstractBehavior {
         });
         useExternalListener(window, "click", this.onWindowClick, true);
     }
-
     onWindowClick(ev){
-        if($(ev.target).parent().hasClass('load-diagram-version')){
-            this.initializeEditor()
+        if (ev.target.parentElement?.classList.contains('load-diagram-version')) {
+            this.initializeEditor('this.props', this.env.model);
         }
     }
-
     get url() {
         var url = "https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&fit=1&saveAndExit=0&noExitBtn=1"
         return url;
     }
-
     postMessage (msg) {
         if (this.frame != null) {
             this.frame?.contentWindow?.postMessage(JSON.stringify(msg), '*');
         }
     }
-
     async initializeEditor () {
+        let [record] = await this.orm.read("knowledge.article",  [this.env.model.config.resId], ['diagram'])
+        const defaultDiagramXml = `<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel>`;
         this.postMessage({
             action: 'load',
-            xml: this.props.record.data.diagram,
+            xml: record.diagram || defaultDiagramXml,
             autosave: '1',
         });
     }
     async loadIframe(){
-        if (this.props.readonly === true) {
-                this.frame.src = '';
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                var text = encodeURIComponent(this.props.record.data.diagram);
-                this.frame.src = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`; // Reset the src to the original URL (reloads the iframe)
+        if (this.env.model.root.data.user_permission !== "write") {
+            this.frame.src = '';
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            var text = encodeURIComponent(this.env.model.root.data?.diagram);
+            this.frame.src = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`;
         }
         else{
             this.frame.src = '';
@@ -65,11 +66,10 @@ export class DiagramBehavior extends AbstractBehavior {
             this.frame.src = `https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1`;
         }
     }
-
     configureEditor () {
         this.postMessage({
             action: 'configure',
-            config: this.props.config
+            config: this.env.model.config
         });
     }
     startEditing() {
@@ -88,7 +88,6 @@ export class DiagramBehavior extends AbstractBehavior {
             }
         }
     }
-
     async handleMessage(msg) {
         switch (msg.event) {
             case 'configure':
@@ -108,18 +107,22 @@ export class DiagramBehavior extends AbstractBehavior {
                 break;
         }
     }
-
     async saveDiagram(xml, exit) {
-        var self=this
-        await jsonrpc(`/web/dataset/call_kw/${this.props.record._config.resModel}/write`, {
-            model: this.props.record._config.resModel,
-            method: "write",
-            args: [
-                [this.props.record._config.resId],
-                {'diagram': xml, 'save_diagram':true}
-            ],
-            kwargs:{}
-        });
-        self.props.record.data.diagram = xml;
+        var self = this
+        await this.orm.write("knowledge.article", [this.env.model.config.resId], {
+                    diagram: xml,
+                    save_diagram: true,
+                });
+        self.env.model.config.resModel= xml;
     }
 }
+/**
+ * Embedding registration object used to hook this component into Odoo's HTML editor framework.
+ */
+export const diagramEmbedding = {
+    name: "DiagramContent",
+    Component: EmbeddedDiagramComponent,
+};
+// Register component in editor embedding sets
+MAIN_EMBEDDINGS.push(diagramEmbedding);
+READONLY_MAIN_EMBEDDINGS.push(diagramEmbedding);
