@@ -6,7 +6,6 @@
          an article (normalize) -->
     <t t-name="diagram_knowledge_article.ArticleDiagramBlueprint">
         <div data-embedded="DiagramContent" contenteditable="true">
-<!--            Here add your template for document plugin-->
         </div>
     </t>
 </templates>
