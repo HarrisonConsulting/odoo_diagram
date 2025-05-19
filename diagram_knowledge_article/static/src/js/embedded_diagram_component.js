@@ -4,7 +4,6 @@ const { onMounted, useRef, useExternalListener } = owl;
 import { useService } from "@web/core/utils/hooks";
 import { rpc as jsonrpc } from "@web/core/network/rpc";
 import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
-import { getEmbeddedProps } from "@html_editor/others/embedded_component_utils";
 import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
 
 /**
@@ -15,7 +14,6 @@ import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_component
  * diagram editor iframe. The behavior also listens for window events and manages diagram data
  * via communication with the iframe.
  */
-
 export class EmbeddedDiagramComponent extends Component {
     static template = "diagram_knowledge_article.EmbeddedDiagram";
     setup() {
@@ -63,7 +61,7 @@ export class EmbeddedDiagramComponent extends Component {
         else{
             this.frame.src = '';
             await new Promise(resolve => setTimeout(resolve, 2000));
-            this.frame.src = `https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noExitBtn=1`;
+            this.frame.src = `https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noSaveBtn=1&noExitBtn=1`;
         }
     }
     configureEditor () {
@@ -113,7 +111,6 @@ export class EmbeddedDiagramComponent extends Component {
                     diagram: xml,
                     save_diagram: true,
                 });
-        self.env.model.config.resModel= xml;
     }
 }
 /**

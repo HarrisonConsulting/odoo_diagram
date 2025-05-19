@@ -1,5 +1,4 @@
 /** @odoo-module **/
-import { MAIN_PLUGINS } from "@html_editor/plugin_sets";
 import { Plugin } from "@html_editor/plugin";
 import { _t } from "@web/core/l10n/translation";
 import { renderToElement } from "@web/core/utils/render";
