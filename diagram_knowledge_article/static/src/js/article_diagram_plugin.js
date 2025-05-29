@@ -3,6 +3,7 @@ import { Plugin } from "@html_editor/plugin";
 import { _t } from "@web/core/l10n/translation";
 import { renderToElement } from "@web/core/utils/render";
 import { KNOWLEDGE_PLUGINS } from "@knowledge/editor/plugin_sets";
+
 /**
  *
  * This component defines the `ArticleDiagramPlugin`, a custom plugin for the Odoo Knowledge HTML editor.

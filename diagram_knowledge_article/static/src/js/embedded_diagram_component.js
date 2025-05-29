@@ -5,6 +5,8 @@ import { useService } from "@web/core/utils/hooks";
 import { rpc as jsonrpc } from "@web/core/network/rpc";
 import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
 import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
+import { user } from "@web/core/user";
+//import { KNOWLEDGE_PUBLIC_EMBEDDINGS } from "@website_knowledge/frontend/editor/embedded_components/embedding_sets";
 
 /**
  * EmbeddedDiagramComponent is responsible for managing the interaction with an embedded diagram editor
@@ -52,16 +54,26 @@ export class EmbeddedDiagramComponent extends Component {
         });
     }
     async loadIframe(){
-        if (this.env.model.root.data.user_permission !== "write") {
-            this.frame.src = '';
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            var text = encodeURIComponent(this.env.model.root.data?.diagram);
-            this.frame.src = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`;
+        console.log('perm', this)
+        console.log('user', user)
+        if(user){
+            if (this.env.model.root.data.user_permission !== "write") {
+                this.frame.src = '';
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                var text = encodeURIComponent(this.env.model.root.data?.diagram);
+                this.frame.src = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`;
+            }
+            else {
+                this.frame.src = '';
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                this.frame.src = `https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noSaveBtn=1&noExitBtn=1`;
+            }
         }
         else{
             this.frame.src = '';
             await new Promise(resolve => setTimeout(resolve, 2000));
-            this.frame.src = `https://embed.diagrams.net/?proto=json&spin=1&ui=min&libraries=1&saveAndExit=0&noSaveBtn=1&noExitBtn=1`;
+            var text = encodeURIComponent(this.env.model.root.data?.diagram);
+            this.frame.src = `https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&pageScale=1&layers=1&nav=1&title=#R${text}`;
         }
     }
     configureEditor () {
@@ -123,3 +135,4 @@ export const diagramEmbedding = {
 // Register component in editor embedding sets
 MAIN_EMBEDDINGS.push(diagramEmbedding);
 READONLY_MAIN_EMBEDDINGS.push(diagramEmbedding);
+//KNOWLEDGE_PUBLIC_EMBEDDINGS.push(diagramEmbedding);

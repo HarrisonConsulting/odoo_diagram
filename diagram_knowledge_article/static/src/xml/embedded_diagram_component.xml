@@ -5,9 +5,10 @@
          is not the first plugin to normalize TODO ABD: check issue when loading
          an article (normalize) -->
     <t t-name="diagram_knowledge_article.EmbeddedDiagram">
-        <div>
+        <div style="width: 100%; height: 100%;">
             <iframe
                     class="o_diagram_editor"
+                    style="width: 100%; height: 100%;"
                     t-ref="diagramEditor"
                     t-att-src="url"
                     frameborder="0" />
