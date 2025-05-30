@@ -6,7 +6,6 @@ import { rpc as jsonrpc } from "@web/core/network/rpc";
 import { MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
 import { READONLY_MAIN_EMBEDDINGS } from "@html_editor/others/embedded_components/embedding_sets";
 import { user } from "@web/core/user";
-//import { KNOWLEDGE_PUBLIC_EMBEDDINGS } from "@website_knowledge/frontend/editor/embedded_components/embedding_sets";
 
 /**
  * EmbeddedDiagramComponent is responsible for managing the interaction with an embedded diagram editor
@@ -135,4 +134,3 @@ export const diagramEmbedding = {
 // Register component in editor embedding sets
 MAIN_EMBEDDINGS.push(diagramEmbedding);
 READONLY_MAIN_EMBEDDINGS.push(diagramEmbedding);
-//KNOWLEDGE_PUBLIC_EMBEDDINGS.push(diagramEmbedding);
