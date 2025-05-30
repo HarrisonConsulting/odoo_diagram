@@ -53,8 +53,6 @@ export class EmbeddedDiagramComponent extends Component {
         });
     }
     async loadIframe(){
-        console.log('perm', this)
-        console.log('user', user)
         if(user){
             if (this.env.model.root.data.user_permission !== "write") {
                 this.frame.src = '';
