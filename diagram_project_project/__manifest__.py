@@ -6,7 +6,7 @@
     This moduleadds a tab to the project model form to draw diagrams. 
     These diagrams would be context specific to the project and its tasks.
     ''',
-    'author': 'Harrison Consulting',
+    'author': 'Harrison Consulting, LLC',
     'website': 'https://www.harrison.consulting',
     'sequence': 0,
     'license': 'GPL-3',

@@ -3,7 +3,7 @@
     'name': 'Draw.io Diagrams for Helpdesk Ticket',
     'version': '18.0.1.0.4',
     'summary': 'This moduleadds a tab to Helpdesk Tickets form to draw diagrams.',
-    'author': 'Harrison Consulting',
+    'author': 'Harrison Consulting, LLC',
     'website': 'https://www.harrison.consulting',
     'sequence': 0,
     'license': 'GPL-3',

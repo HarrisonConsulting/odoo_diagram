@@ -4,7 +4,7 @@
     'version': '18.0.1.0.2',
     'summary': """This module helps to view and edit project task diagrams
      through the website portal.""",
-    'author': 'Harrison Consulting',
+    'author': 'Harrison Consulting, LLC',
     'website': 'https://www.harrison.consulting',
     'sequence': 0,
     'license': 'GPL-3',

@@ -3,7 +3,7 @@
     'name': 'Draw.io Diagrams Base Module',
     'version': '18.0.1.0.4',
     'summary': 'This base module embeded Draw.io Tool',
-    'author': 'Harrison Consulting',
+    'author': 'Harrison Consulting, LLC',
     'website': 'https://www.harrison.consulting',
     'sequence': 0,
     'license': 'GPL-3',

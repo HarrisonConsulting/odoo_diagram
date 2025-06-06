@@ -3,7 +3,7 @@
     'name': 'Draw.io Diagrams for Knowledge Module',
     'version': '18.0.1.0.3',
     'summary': """This module adds a diagram in '/' menu in knowledge to draw diagrams.""",
-    'author': 'Harrison Consulting',
+    'author': 'Harrison Consulting, LLC',
     'website': 'https://www.harrison.consulting',
     'sequence': 0,
     'license': 'GPL-3',
