@@ -18,7 +18,7 @@
     <record id="action_knowledge_diagram_versions" model="ir.actions.act_window">
         <field name="name">Diagram Versions</field>
         <field name="res_model">diagram.version</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('reference_model', '=', 'knowledge.article')]</field>
         <field name="context">{'default_reference_model': 'knowledge.article'}</field>
         <field name="path">knowledge-diagram-versions</field>
