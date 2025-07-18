@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--Inheriting project task portal template to add diagram draw functionality -->
-    <template id="diagram_website_portal.portal_my_task"
+    <template id="diagram_project_task.portal_my_task"
               inherit_id="project.portal_my_task"
               name="Portal Task Diagrams">
         <xpath expr="//div[@t-if='task.description or task.attachment_ids']"
@@ -17,7 +17,7 @@
                                 Description
                             </a>
                         </li>
-                        <li t-if='task.diagram' class="nav-item" role="presentation">
+                        <li t-if='task.diagram and task.diagram != "&lt;p&gt;&lt;br&gt;&lt;/p&gt;" and task.diagram_publish_on_portal' class="nav-item" role="presentation">
                             <a class="nav-link" id="profile-tab"
                                data-bs-toggle="tab" href="#profile" role="tab"
                                aria-controls="profile" aria-selected="false">
@@ -38,7 +38,8 @@
                         <div class="tab-pane fade show active" id="home"
                              role="tabpanel" aria-labelledby="home-tab">
                             <div class="py-1 px-2 bg-100 small table-responsive"
-                                 t-field="task.description"/>
+                                 t-field="task.description"
+                                 t-options='{"widget": "html"}'/>
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel"
                              aria-labelledby="profile-tab">
@@ -61,25 +62,39 @@
                                                     aria-label="Close"/>
                                         </div>
                                         <div class="modal-body">
-                                            <t t-set="props" t-value="json.dumps({
-                                    'resModel': 'project.task',
-                                    'resId': task.id,
-                                    'name': 'diagram',
-                                    })"/>
-                                            <owl-component name="draw_diagram"
-                                                           t-att-props="props"/>
+                                            <!-- Render diagram content for portal viewing -->
+                                            <t t-if="task.diagram">
+                                                <div class="diagram-viewer-container-modal" 
+                                                     t-att-data-diagram="task.diagram">
+                                                    <iframe
+                                                        class="diagram-viewer-iframe-modal"
+                                                        style="width: 100%; height: calc(100vh - 100px); border: none;"
+                                                        frameborder="0">
+                                                    </iframe>
+                                                </div>
+                                            </t>
+                                            <t t-else="">
+                                                <div class="text-muted p-3">No diagram content available</div>
+                                            </t>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="task_diagram_io">
-                                <t t-set="props" t-value="json.dumps({
-                                    'resModel': 'project.task',
-                                    'resId': task.id,
-                                    'name': 'diagram',
-                                    })"/>
-                                <owl-component name="draw_diagram"
-                                               t-att-props="props"/>
+                                <!-- Render diagram content for portal viewing -->
+                                <t t-if="task.diagram">
+                                    <div class="diagram-viewer-container" 
+                                         t-att-data-diagram="task.diagram">
+                                        <iframe
+                                            class="diagram-viewer-iframe"
+                                            style="width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 4px;"
+                                            frameborder="0">
+                                        </iframe>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-muted p-3">No diagram content available</div>
+                                </t>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="contact" role="tabpanel"

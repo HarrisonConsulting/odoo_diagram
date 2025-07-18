@@ -1,0 +1,104 @@
+// Main diagram widget container
+.o_diagram {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    
+    // The iframe container should expand to fill available space
+    .o_diagram_editor {
+        width: 100%;
+        min-height: 600px;
+        height: calc(100vh - 300px); // Dynamic height based on viewport
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        flex: 1 1 auto;
+    }
+}
+
+// When inside a form view, adapt to available space better
+.o_form_view {
+    // Target the notebook page containing the diagram
+    .o_notebook {
+        .tab-content {
+            .tab-pane {
+                &[name="diagram_page"] {
+                    display: flex;
+                    flex-direction: column;
+                    height: calc(100vh - 350px); // Account for header and tabs
+                    
+                    .o_group {
+                        flex: 0 0 auto; // Version selector doesn't grow
+                    }
+                    
+                    // Make the diagram group fill remaining space
+                    > .o_group:last-child {
+                        flex: 1 1 auto;
+                        display: flex;
+                        flex-direction: column;
+                        height: 100%;
+                        
+                        .o_wrap_field {
+                            flex: 1 1 auto;
+                            display: flex;
+                            height: 100%;
+                            
+                            .o_diagram {
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive adjustments for smaller screens
+@include media-breakpoint-down(md) {
+    .o_diagram {
+        .o_diagram_editor {
+            height: calc(100vh - 400px); // Slightly less height on mobile
+        }
+    }
+}
+
+.o_embedded_diagram_container {
+    width: 100%;
+    margin: 10px 0;
+    
+    .o_diagram_iframe {
+        width: 100%;
+        height: 600px;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        background-color: #fff;
+    }
+}
+
+.o_diagram_container {
+    min-height: 100px;
+    border: 2px dashed $o-brand-primary;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 20px;
+    text-align: center;
+    background-color: rgba($o-brand-primary, 0.05);
+    
+    .o_diagram_placeholder {
+        color: $text-muted;
+        font-size: 14px;
+    }
+    
+    // Hide the placeholder when the embedded component is mounted
+    &:has(.o_embedded_diagram_container) {
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        
+        .o_diagram_placeholder {
+            display: none;
+        }
+    }
+}

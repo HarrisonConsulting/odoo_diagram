@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inheriting helpdesk ticket portal template to add diagram functionality -->
+    <template id="diagram_helpdesk_ticket.tickets_followup"
+              inherit_id="helpdesk.tickets_followup"
+              name="Portal Ticket Diagrams">
+        <xpath expr="//hr[1]" position="before">
+            <div t-if="ticket.diagram and ticket.diagram != '&lt;p&gt;&lt;br&gt;&lt;/p&gt;' and ticket.diagram_publish_on_portal" class="mt-4">
+                <hr/>
+                <h3>Diagram</h3>
+                <div id="ticket_diagram">
+                    <button type="button" id="Show_ticket_full_screen"
+                            class="btn btn-secondary mb-3 float-end">
+                        <i class="fa fa-expand"/>
+                        Full Screen
+                    </button>
+                    
+                    <!-- Fullscreen Modal -->
+                    <div class="modal fullscreen_ticket_diagram"
+                         tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Diagram</h5>
+                                    <button type="button"
+                                            class="btn-close close_ticket_modal"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"/>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Render diagram content for portal viewing -->
+                                    <t t-if="ticket.diagram">
+                                        <div class="diagram-viewer-container-modal" 
+                                             t-att-data-diagram="ticket.diagram">
+                                            <iframe
+                                                class="diagram-viewer-iframe-modal"
+                                                style="width: 100%; height: calc(100vh - 100px); border: none;"
+                                                frameborder="0">
+                                            </iframe>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Regular diagram display -->
+                    <div id="ticket_diagram_io" class="clearfix">
+                        <t t-if="ticket.diagram">
+                            <div class="diagram-viewer-container" 
+                                 t-att-data-diagram="ticket.diagram">
+                                <iframe
+                                    class="diagram-viewer-iframe"
+                                    style="width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 4px;"
+                                    frameborder="0">
+                                </iframe>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

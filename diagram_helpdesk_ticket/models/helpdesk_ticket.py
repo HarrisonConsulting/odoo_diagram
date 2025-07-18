@@ -12,6 +12,8 @@ class HelpdeskTicket(models.Model):
                                        help="Reference to previous versions of this diagram.")
     show_load_diagram = fields.Boolean(string="Show Load Diagram Button",
                                      help="Technical field to control visibility of the load diagram button.")
+    diagram_publish_on_portal = fields.Boolean(string="Publish Diagram on Portal", default=False,
+                                             help="If enabled, the diagram will be visible to portal users viewing this ticket.")
 
     def write(self, vals):
         if vals.get('diagram') and vals.get('save_diagram'):

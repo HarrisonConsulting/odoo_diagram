@@ -12,6 +12,7 @@
                             <field name="show_load_diagram" invisible="1"/>
                             <field name="diagram_version_id" 
                                    options="{'no_create': True}"/>
+                            <field name="diagram_publish_on_portal"/>
                         </group>
                         <div class="ms-3">
                             <button type="object" name="update_show_load_diagram"
